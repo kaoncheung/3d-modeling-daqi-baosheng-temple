@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IT ESG 數位文化保存專案｜3D 建模成果</title>
+  <meta name="description" content="IT ESG 數位文化保存專案，由數十位 IT 廠處志工參與，展示廟宇建築與 3D 建模成果。" />
+
+  <!-- Google model-viewer：支援 GLB / glTF 3D 模型展示 -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f6efe4;
+      --paper: #fffaf2;
+      --ink: #31261e;
+      --muted: #76685c;
+      --accent: #b65a35;
+      --accent2: #d8a65f;
+      --line: rgba(80, 55, 35, .16);
+      --shadow: 0 18px 50px rgba(66, 38, 18, .14);
+      --radius: 26px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(216,166,95,.30), transparent 30%),
+        radial-gradient(circle at 86% 8%, rgba(182,90,53,.18), transparent 28%),
+        linear-gradient(180deg, #fff8ee 0%, var(--bg) 48%, #eadbc8 100%);
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 34px 0 56px;
+    }
+
+    header {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 64px);
+      border: 1px solid var(--line);
+      border-radius: 36px;
+      background:
+        linear-gradient(135deg, rgba(255,250,242,.97), rgba(255,244,229,.86)),
+        repeating-linear-gradient(45deg, rgba(182,90,53,.04) 0 10px, rgba(216,166,95,.045) 10px 20px);
+      box-shadow: var(--shadow);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      right: -110px;
+      top: -125px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: rgba(182,90,53,.10);
+      border: 1px solid rgba(182,90,53,.16);
+    }
+
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 15px;
+      border: 1px solid rgba(182,90,53,.24);
+      border-radius: 999px;
+      color: #78442f;
+      background: rgba(255,255,255,.62);
+      font-size: .94rem;
+      letter-spacing: .08em;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(182,90,53,.13);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 24px 0 18px;
+      font-size: clamp(2.15rem, 5.8vw, 5rem);
+      line-height: 1.04;
+      letter-spacing: -.06em;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.26rem);
+      line-height: 1.95;
+    }
+
+    .highlight {
+      color: #603523;
+      font-weight: 900;
+      background: linear-gradient(transparent 62%, rgba(216,166,95,.34) 62%);
+    }
+
+    .stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 30px;
+      max-width: 790px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255,255,255,.60);
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+      font-size: 1.36rem;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin: 46px 0 20px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(1.75rem, 3.6vw, 3rem);
+      letter-spacing: -.045em;
+    }
+
+    .section-title p {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .models {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,250,242,.88);
+      box-shadow: 0 16px 42px rgba(63,38,20,.10);
+    }
+
+    .viewer-wrap {
+      position: relative;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,.97), rgba(237,224,208,.76) 66%),
+        linear-gradient(180deg, #fdf7ee, #eadcca);
+    }
+
+    model-viewer {
+      width: 100%;
+      height: min(60vh, 560px);
+      min-height: 390px;
+      --poster-color: transparent;
+    }
+
+    .model-label,
+    .hint {
+      position: absolute;
+      z-index: 2;
+      border: 1px solid rgba(80,55,35,.15);
+      border-radius: 999px;
+      background: rgba(255,250,242,.84);
+      backdrop-filter: blur(10px);
+      color: #6e3d2a;
+      font-weight: 850;
+      font-size: .92rem;
+    }
+
+    .model-label {
+      top: 16px;
+      left: 16px;
+      padding: 8px 12px;
+    }
+
+    .hint {
+      right: 16px;
+      bottom: 16px;
+      padding: 7px 11px;
+      color: rgba(80,55,35,.72);
+      font-weight: 700;
+      font-size: .86rem;
+    }
+
+    .card-body {
+      padding: 24px 24px 26px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.45rem;
+      letter-spacing: -.02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .mission {
+      margin-top: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,.76), rgba(255,247,235,.9));
+      padding: clamp(22px, 4vw, 38px);
+      box-shadow: 0 14px 40px rgba(63,38,20,.08);
+    }
+
+    .mission h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.65rem, 3vw, 2.5rem);
+      letter-spacing: -.04em;
+    }
+
+    .mission p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.95;
+      font-size: 1.05rem;
+    }
+
+    footer {
+      margin-top: 28px;
+      color: rgba(48,40,32,.62);
+      text-align: center;
+      font-size: .92rem;
+    }
+
+    @media (max-width: 880px) {
+      .stats,
+      .models { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .section-title p { margin-top: 10px; }
+      model-viewer { height: 430px; min-height: 340px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header>
+      <div class="eyebrow">IT ESG 數位文化保存專案</div>
+      <h1>以 3D 建模保存地方文化記憶</h1>
+      <p class="hero-text">
+        IT ESG 廠處<span class="highlight">數十位志工共同參與數位文化保存專案</span>，於 2024 年底完成拍攝，2025 年開始進行 3D 建模與列印課程。這次完成以下兩個 3D 建模作品，希望透過科技工具保存地方文化，也代表企業永續行動中對土地、社區與文化延續的期盼。
+      </p>
+
+      <div class="stats" aria-label="專案摘要">
+        <div class="stat">
+          <strong>2024</strong>
+          <span>完成影像拍攝與資料蒐集</span>
+        </div>
+        <div class="stat">
+          <strong>2025</strong>
+          <span>展開 3D 建模與列印課程</span>
+        </div>
+        <div class="stat">
+          <strong>2 件</strong>
+          <span>3D 建模成果展示</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section-title" aria-labelledby="works-title">
+      <div>
+        <h2 id="works-title">3D 建模成果</h2>
+      </div>
+      <p>可使用滑鼠拖曳旋轉、滾輪縮放，或在手機上以手勢瀏覽模型細節。高畫質模型檔案較大，第一次載入請稍候。</p>
+    </section>
+
+    <section class="models">
+      <article class="card">
+        <div class="viewer-wrap">
+          <span class="model-label">Model 01</span>
+          <span class="hint">拖曳旋轉｜滾輪縮放</span>
+          <model-viewer
+            src="./building.glb"
+            alt="廟宇建築 3D 模型"
+            camera-controls
+            auto-rotate
+            rotation-per-second="18deg"
+            shadow-intensity="0.85"
+            exposure="1"
+            camera-orbit="35deg 72deg auto"
+            loading="eager">
+          </model-viewer>
+        </div>
+        <div class="card-body">
+          <h3>廟宇建築 3D 重建</h3>
+          <p>以現地掃描與空拍資料進行建模，嘗試保存廟宇建築、屋頂形式與周邊空間樣貌。即使掃描與後製過程仍有技術限制，這件作品代表志工團隊對地方文化保存的努力與實踐。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viewer-wrap">
+          <span class="model-label">Model 02</span>
+          <span class="hint">拖曳旋轉｜滾輪縮放</span>
+          <model-viewer
+            src="./model.glb"
+            alt="文化保存 3D 模型"
+            camera-controls
+            auto-rotate
+            rotation-per-second="18deg"
+            shadow-intensity="0.85"
+            exposure="1"
+            camera-orbit="35deg 72deg auto"
+            loading="lazy">
+          </model-viewer>
+        </div>
+        <div class="card-body">
+          <h3>3D 建模與列印成果</h3>
+          <p>透過 3D 建模與列印課程，將地方文化元素轉化為可觀看、可互動、可展示的數位模型，讓文化保存更容易被理解、分享與傳遞。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="mission">
+      <h2>科技參與文化保存，讓永續不只停留在口號</h2>
+      <p>
+        本專案期待讓企業志工的技術能力，轉化為支持地方文化保存的實際行動。從拍攝、建模到展示，每一個步驟都代表著企業與地方社群之間新的連結：科技不只是生產力，也可以成為保存記憶、回應土地、延續文化的重要工具。
+      </p>
+    </section>
+
+    <footer>
+      IT ESG Volunteer Digital Cultural Preservation Project
+    </footer>
+  </main>
+</body>
+</html>
